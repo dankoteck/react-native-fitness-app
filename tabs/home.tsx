@@ -1,13 +1,14 @@
+import { StyleSheet } from "react-native";
+
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeScreen from "@/screens/setting";
+import HomeScreen from "@/screens/home";
 import SettingScreen from "@/screens/setting";
-import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomNavigator() {
+export default function HomeTabs() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -26,7 +27,7 @@ export default function BottomNavigator() {
             <MaterialIcons
               name="timer"
               size={24}
-              color={focused ? "#0954a5" : "grey"}
+              color={focused ? "blue" : "grey"}
             />
           ),
         }}
@@ -36,11 +37,14 @@ export default function BottomNavigator() {
         name="Settings"
         component={SettingScreen}
         options={{
+          headerTitleAlign: "left",
+          headerTitleStyle: styles.headerTitle,
+          headerTitle: "Settings",
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="ios-compass-sharp"
               size={24}
-              color={focused ? "#0954a5" : "grey"}
+              color={focused ? "blue" : "grey"}
             />
           ),
         }}
