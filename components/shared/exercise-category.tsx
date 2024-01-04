@@ -1,53 +1,69 @@
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useCallback, useMemo } from "react";
 import {
   ImageBackground,
-  ImageSourcePropType,
+  Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 
-import { FontAwesome5 } from "@expo/vector-icons";
+import { ExerciseCategoryData, RootStackParamList } from "@/ultilities/types";
+import { getDifficultString } from "@/ultilities/utils";
 
 type Props = {
-  difficult: number;
-  title: string;
-  spendTime: number; // in minutes
-  totalExercises: number;
-  bgImage: ImageSourcePropType;
+  data: ExerciseCategoryData;
 };
 
-export default function ExerciseCategory({
-  difficult,
-  title,
-  spendTime,
-  totalExercises,
-  bgImage,
-}: Props) {
-  return (
-    <ImageBackground
-      source={bgImage}
-      resizeMode="cover"
-      imageStyle={styles.backgroundImage}
-    >
-      <View style={styles.container}>
-        <View style={styles.icons}>
-          {[1, 2, 3].map((item) => (
-            <FontAwesome5
-              name="dumbbell"
-              size={14}
-              color={item <= difficult ? "#0954a5" : "#fff"}
-              key={item}
-            />
-          ))}
-        </View>
+type Navigation = NativeStackNavigationProp<RootStackParamList, "Exercises">;
 
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>
-          {spendTime} mins&sdot;{totalExercises} exercises
-        </Text>
-        <View style={styles.overlay} />
-      </View>
-    </ImageBackground>
+export default function ExerciseCategory({ data }: Props) {
+  const navigation = useNavigation<Navigation>();
+
+  const title = useMemo(
+    () => `${data.target.toUpperCase()} ${getDifficultString(data.difficult)}`,
+    [data.target, data.difficult]
+  );
+
+  const onPress = useCallback(
+    (data: ExerciseCategoryData) => {
+      navigation.navigate("Exercises", {
+        target: data.target,
+        difficult: data.difficult,
+      });
+    },
+    [data.target, data.difficult]
+  );
+
+  return (
+    <Pressable onPress={onPress.bind(null, data)}>
+      <ImageBackground
+        source={data.bgImage}
+        resizeMode="cover"
+        imageStyle={styles.backgroundImage}
+      >
+        <View style={styles.container}>
+          <View style={styles.icons}>
+            {[1, 2, 3].map((item) => (
+              <FontAwesome5
+                name="dumbbell"
+                size={14}
+                color={item <= data.difficult ? "#0954a5" : "#fff"}
+                key={item}
+              />
+            ))}
+          </View>
+
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.description}>
+            {data.spendTime} mins&sdot;{data.totalExercises} exercises
+          </Text>
+          <View style={styles.overlay} />
+        </View>
+      </ImageBackground>
+    </Pressable>
   );
 }
 
