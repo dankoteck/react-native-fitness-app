@@ -1,4 +1,5 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import ExerciseCategory from "@/components/shared/exercise-category";
 import {
@@ -7,28 +8,31 @@ import {
 } from "@/static/exercises-category";
 
 export default function Home() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <Text style={styles.sectionTitle}>Beginner</Text>
-          <View style={styles.exercisesContainer}>
-            {beginnerExercises.map((item) => (
-              <ExerciseCategory data={item} key={item.id} />
-            ))}
-          </View>
-        </View>
+  const insets = useSafeAreaInsets();
 
-        <View style={{ marginTop: 20 }}>
-          <Text style={styles.sectionTitle}>Intermediate</Text>
-          <View style={styles.exercisesContainer}>
-            {intermediateExercises.map((item) => (
-              <ExerciseCategory data={item} key={item.id} />
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+  return (
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        {
+          paddingBottom: insets.bottom,
+        },
+      ]}
+    >
+      <View style={styles.exercisesContainer}>
+        <Text style={styles.sectionTitle}>Beginner</Text>
+        {beginnerExercises.map((item) => (
+          <ExerciseCategory key={item.id} data={item} />
+        ))}
+      </View>
+
+      <View style={styles.exercisesContainer}>
+        <Text style={styles.sectionTitle}>Intermediate</Text>
+        {intermediateExercises.map((item) => (
+          <ExerciseCategory key={item.id} data={item} />
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -37,14 +41,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 24,
     backgroundColor: "#fff",
-    height: "100%",
+    gap: 24,
   },
 
   sectionTitle: {
     fontSize: 18,
     fontWeight: "700",
     textTransform: "uppercase",
-    marginBottom: 12,
+    marginBottom: 4,
   },
 
   exercisesContainer: {

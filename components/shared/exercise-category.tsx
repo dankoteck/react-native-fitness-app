@@ -29,12 +29,9 @@ export default function ExerciseCategory({ data }: Props) {
 
   const onPress = useCallback(
     (data: ExerciseCategoryData) => {
-      navigation.navigate("Exercises", {
-        target: data.target,
-        difficult: data.difficult,
-      });
+      navigation.navigate("Exercises", data);
     },
-    [data.target, data.difficult]
+    [data]
   );
 
   return (

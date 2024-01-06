@@ -23,12 +23,7 @@ export type ExerciseCategoryData = {
   bgImage: ImageSourcePropType;
 };
 
-export type ExerciseScreenParams = Pick<
-  ExerciseCategoryData,
-  "difficult" | "target"
->;
-
 export type RootStackParamList = {
   Home: undefined;
-  Exercises: ExerciseScreenParams;
+  Exercises: ExerciseCategoryData;
 };
